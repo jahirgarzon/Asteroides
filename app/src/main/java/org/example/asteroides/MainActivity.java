@@ -9,17 +9,50 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
 
 
 public class MainActivity extends Activity {
 
     public static AlmacenPuntuaciones almacen = new AlmacenPuntuacionesArray();
+    private Button acercade;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        TextView titulo = findViewById(R.id.textView);
+        Animation animaTitulo = AnimationUtils.loadAnimation(this, R.anim.giro_con_zoom);
+        titulo.startAnimation(animaTitulo);
+        Button jugar = findViewById(R.id.button1);
+        Animation animaBut1 = AnimationUtils.loadAnimation(this, R.anim.aparecer);
+        jugar.startAnimation(animaBut1);
+        Button configurar = findViewById(R.id.button2);
+        Animation animaBut2 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha);
+        configurar.startAnimation(animaBut2);
+        // Event listener por codigo para abrir acerca de.
+        acercade = findViewById(R.id.button3);
+        final Animation animaBut3 = AnimationUtils.loadAnimation(this, R.anim.giro_con_zoom);
+        acercade.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarAcercaDe(null);
+
+                acercade.startAnimation(animaBut3);
+
+
+            }
+        });
+
+
+
     }
 
     @Override
@@ -43,7 +76,19 @@ public class MainActivity extends Activity {
     }
 
     public void lanzarAcercaDe(View view) {
+
+
         Intent i = new Intent(this, AcercaDeActivity.class);
+
+        startActivity(i);
+        //animacion de boton
+
+
+    }
+
+    public void lanzarJuego(View view) {
+        Intent i = new Intent(this, Juego.class);
+
         startActivity(i);
     }
 
@@ -63,6 +108,7 @@ public class MainActivity extends Activity {
 
     }
     public void lanzarPuntuaciones(View view) {
+
         Intent i = new Intent(this, Puntuaciones.class);
         startActivity(i);
     }

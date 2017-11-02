@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/degradado"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="30dp"
@@ -13,41 +14,50 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:paddingBottom="40dp"
+        android:paddingBottom="20dp"
         android:text="@string/asteroides"
-        android:textSize="25sp"
-        android:layout_marginBottom="20dp"/>
+        android:textColor="#000000"
+        android:textSize="35sp"
+        android:textStyle="bold" />
+
 
     <Button
-        android:id="@+id/button9"
+        android:id="@+id/button1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="mostrarPreferencias"
-        android:text="@string/jugar" />
+        android:onClick="lanzarJuego"
+        android:text="@string/jugar"
+
+        android:theme="@style/MainButtons" />
 
     <Button
-        android:id="@+id/button7"
+        android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:onClick="lanzarPreferencias"
-        android:text="@string/configurar" />
+        android:text="@string/configurar"
+        android:theme="@style/MainButtons" />
 
     <Button
-        android:id="@+id/button8"
+        android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/acerca_de" />
+        android:text="@string/acerca_de"
+        android:theme="@style/MainButtons" />
 
     <Button
-        android:id="@+id/button10"
+        android:id="@+id/button4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:onClick="lanzarPuntuaciones"
-        android:text="@string/salir" />
+        android:text="@string/salir"
+        android:theme="@style/MainButtons" />
+
 
 </LinearLayout>

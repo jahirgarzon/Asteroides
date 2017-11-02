@@ -4,5 +4,5 @@
     <string name="asteroides">ASTEROIDES</string>
     <string name="configurar">CONFIGURAR</string>
     <string name="jugar">JUGAR</string>
-    <string name="salir">PUNTUAciones</string>
+    <string name="salir">PUNTUACIONES</string>
 </resources>
