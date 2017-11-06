@@ -39,13 +39,15 @@ public class VistaJuego extends View {
 
     public VistaJuego(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Drawable drawableNave = null, drawableAsteroide, drawableMisil;
+
+        Drawable drawableNave, drawableAsteroide, drawableMisil;
 
 
         SharedPreferences pref = PreferenceManager.
                 getDefaultSharedPreferences(getContext());
 
         if (pref.getString("graficos", "1").equals("0")) {
+
             Path pathAsteroide = new Path();
             pathAsteroide.moveTo((float) 0.3, (float) 0.0);
             pathAsteroide.lineTo((float) 0.6, (float) 0.0);
@@ -59,12 +61,14 @@ public class VistaJuego extends View {
             pathAsteroide.lineTo((float) 0.0, (float) 0.6);
             pathAsteroide.lineTo((float) 0.0, (float) 0.2);
             pathAsteroide.lineTo((float) 0.3, (float) 0.0);
+
             ShapeDrawable dAsteroide = new ShapeDrawable(
                     new PathShape(pathAsteroide, 1, 1));
             dAsteroide.getPaint().setColor(Color.WHITE);
             dAsteroide.getPaint().setStyle(Paint.Style.STROKE);
             dAsteroide.setIntrinsicWidth(50);
             dAsteroide.setIntrinsicHeight(50);
+
             drawableAsteroide = dAsteroide;
 
             Path pathNave = new Path();

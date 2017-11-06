@@ -22,6 +22,9 @@ public class MainActivity extends Activity {
 
     public static AlmacenPuntuaciones almacen = new AlmacenPuntuacionesArray();
     private Button acercade;
+    private Button jugar;
+    private Button puntuaciones;
+    private Button configurar;
 
 
     @Override
@@ -32,24 +35,56 @@ public class MainActivity extends Activity {
         TextView titulo = findViewById(R.id.textView);
         Animation animaTitulo = AnimationUtils.loadAnimation(this, R.anim.giro_con_zoom);
         titulo.startAnimation(animaTitulo);
-        Button jugar = findViewById(R.id.button1);
-        Animation animaBut1 = AnimationUtils.loadAnimation(this, R.anim.aparecer);
+
+        jugar = findViewById(R.id.button1);
+        final Animation animaBut1 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha);
         jugar.startAnimation(animaBut1);
-        Button configurar = findViewById(R.id.button2);
-        Animation animaBut2 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha);
+        jugar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarJuego(null);
+            }
+        });
+
+
+        configurar = findViewById(R.id.button2);
+
+        Animation animaBut2 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha1);
         configurar.startAnimation(animaBut2);
+        configurar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarPreferencias(null);
+
+            }
+        });
+
         // Event listener por codigo para abrir acerca de.
         acercade = findViewById(R.id.button3);
-        final Animation animaBut3 = AnimationUtils.loadAnimation(this, R.anim.giro_con_zoom);
+        final Animation animaBut3 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha2);
+        acercade.startAnimation(animaBut3);
         acercade.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 lanzarAcercaDe(null);
 
-                acercade.startAnimation(animaBut3);
+
 
 
             }
         });
+
+
+        puntuaciones = findViewById(R.id.button4);
+        final Animation animaBut4 = AnimationUtils.loadAnimation(this, R.anim.desplazamiento_derecha3);
+        puntuaciones.startAnimation(animaBut4);
+        puntuaciones.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                lanzarPuntuaciones(null);
+
+
+            }
+        });
+
+
+
 
 
 

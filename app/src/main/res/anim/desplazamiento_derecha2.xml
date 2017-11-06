@@ -5,6 +5,7 @@
 
         android:duration="500"
         android:fromXDelta="400"
+        android:startOffset="500"
         android:toXDelta="0" />
 
 

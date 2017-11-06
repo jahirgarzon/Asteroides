@@ -28,9 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="lanzarJuego"
         android:text="@string/jugar"
-
         android:theme="@style/MainButtons" />
 
     <Button
@@ -38,7 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="lanzarPreferencias"
         android:text="@string/configurar"
         android:theme="@style/MainButtons" />
 
@@ -55,7 +52,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="lanzarPuntuaciones"
         android:text="@string/salir"
         android:theme="@style/MainButtons" />
 
