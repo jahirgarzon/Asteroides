@@ -13,16 +13,26 @@ import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.KeyEvent.KEYCODE_DPAD_UP;
 
 /**
  * Created by jay on 10/28/17.
  */
 
 public class VistaJuego extends View {
+    // //// THREAD Y TIEMPO //////
+// Thread encargado de procesar el juego
+    private ThreadJuego thread = new ThreadJuego();
+    // Cada cuanto queremos procesar cambios (ms)
+    private static int PERIODO_PROCESO = 50;
+    // Cuando se realizó el último proceso
+    private long ultimoProceso = 0;
     private static final int MAX_VELOCIDAD_NAVE = 20;
     // Incremento estándar de giro y aceleración
     private static final int PASO_GIRO_NAVE = 5;
@@ -130,11 +140,14 @@ public class VistaJuego extends View {
         nave.setCenX(ancho / 2);
         nave.setCenY(alto / 2);
 
+        ultimoProceso = System.currentTimeMillis();
+        thread.start();
+
 
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+   synchronized protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (Grafico asteroide : asteroides) {
             asteroide.dibujaGrafico(canvas);
@@ -142,5 +155,89 @@ public class VistaJuego extends View {
 
         nave.dibujaGrafico(canvas);
     }
+    synchronized protected void actualizaFisica() {
+        long ahora = System.currentTimeMillis();
+        if (ultimoProceso + PERIODO_PROCESO > ahora) {
+            return; // Salir si el período de proceso no se ha cumplido.
+        }
+// Para una ejecución en tiempo real calculamos el factor de movimiento
+        double factorMov = (ahora - ultimoProceso) / PERIODO_PROCESO;
+        ultimoProceso = ahora; // Para la próxima vez
+// Actualizamos velocidad y dirección de la nave a partir de
+// giroNave y aceleracionNave (según la entrada del jugador)
+        nave.setAngulo((int) (nave.getAngulo() + giroNave * factorMov));
+        double nIncX = nave.getIncX() + aceleracionNave *
+                Math.cos(Math.toRadians(nave.getAngulo())) * factorMov;
+        double nIncY = nave.getIncY() + aceleracionNave *
+                Math.sin(Math.toRadians(nave.getAngulo())) * factorMov;
+// Actualizamos si el módulo de la velocidad no excede el máximo
+        if (Math.hypot(nIncX,nIncY) <=  MAX_VELOCIDAD_NAVE ){
+            nave.setIncX(nIncX);
+            nave.setIncY(nIncY);
+        }
+        nave.incrementaPos(factorMov); // Actualizamos posición
+        for (Grafico asteroide : asteroides) {
+            asteroide.incrementaPos(factorMov);
+        }
+    }
+    class ThreadJuego extends Thread{
+        @Override
+                public void run(){
+            while (true){
+               actualizaFisica();
+            }
+        }
+    }
+    @Override
+    public  boolean onKeyDown(int codigoTecla, KeyEvent evento) {
+        super.onKeyDown(codigoTecla, evento);
+        //Suponemos que vamos a procesar la pulsacion
+        boolean procesada = true;
+        switch (codigoTecla) {
+            case KeyEvent.KEYCODE_DPAD_UP:
+                aceleracionNave = +PASO_ACELERACION_NAVE;
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                giroNave = - PASO_GIRO_NAVE;
+                break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                giroNave = + PASO_GIRO_NAVE;
+                break;
+            case KeyEvent.KEYCODE_DPAD_CENTER:
+            case KeyEvent.KEYCODE_ENTER:
+                //activaMisil();
+                break;
+            default:
+                //Si estamos aqui no hay pulsacion que nos interese
+                procesada = false;
+        }
+        return procesada;
+    }
+    @Override
+  public boolean onKeyUp(int codigoTecla,KeyEvent evento){
+        super.onKeyUp(codigoTecla,evento);
+        boolean procesada = true;
+        switch(codigoTecla){
+            case KeyEvent.KEYCODE_DPAD_UP:
+                aceleracionNave=0;
+                break;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                giroNave = 0;
+                break;
+            default:
+                procesada = false;
+                break;
+
+
+
+        }
+        return procesada;
+
+    }
 
 }
+
+
+
+

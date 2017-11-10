@@ -3,6 +3,9 @@
     android:height="168dp"
     android:viewportHeight="1080.0"
     android:viewportWidth="1920.0">
+    <group
+        android:scaleX=".75"
+        android:scaleY=".75">
     <path
         android:fillAlpha="1.0"
         android:fillColor="#131313"
@@ -58,4 +61,5 @@
         android:fillColor="#1F1C1C"
         android:pathData="M613.3,578.4Q613.1,578.6 613,578.9L596.3,619.9Q595.9,621.5 597.4,622.5Q599,623.2 600.2,621.9Q600.4,621.7 600.5,621.3L617.2,580.4Q617.6,578.7 616.1,577.8Q614.5,577 613.3,578.3"
         android:strokeLineJoin="miter" />
+    </group>
 </vector>
