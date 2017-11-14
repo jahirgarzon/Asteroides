@@ -14,6 +14,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -26,17 +27,17 @@ import static android.view.KeyEvent.KEYCODE_DPAD_UP;
  */
 
 public class VistaJuego extends View {
-    // //// THREAD Y TIEMPO //////
-// Thread encargado de procesar el juego
-    private ThreadJuego thread = new ThreadJuego();
-    // Cada cuanto queremos procesar cambios (ms)
-    private static int PERIODO_PROCESO = 50;
-    // Cuando se realizó el último proceso
-    private long ultimoProceso = 0;
     private static final int MAX_VELOCIDAD_NAVE = 20;
     // Incremento estándar de giro y aceleración
     private static final int PASO_GIRO_NAVE = 5;
     private static final float PASO_ACELERACION_NAVE = 0.5f;
+    // Cada cuanto queremos procesar cambios (ms)
+    private static int PERIODO_PROCESO = 50;
+    // //// THREAD Y TIEMPO //////
+// Thread encargado de procesar el juego
+    private ThreadJuego thread = new ThreadJuego();
+    // Cuando se realizó el último proceso
+    private long ultimoProceso = 0;
     ////////ASTEROIDES//////////
     private List<Grafico> asteroides; //lista con los Asteroides
     private int numAsteroides = 5;//Numero inicial de asteroides
@@ -44,7 +45,10 @@ public class VistaJuego extends View {
     ///////NAVE////////////////
     private Grafico nave; // Gráfico de la nave
     private int giroNave; // Incremento de dirección
-    private double aceleracionNave; // aumento de velocidad
+    private double aceleracionNave; //
+    /////nave de celular/////
+    private float mX = 0, mY = 0;
+    private boolean disparo = false;
 
 
     public VistaJuego(Context context, AttributeSet attrs) {
@@ -180,14 +184,7 @@ public class VistaJuego extends View {
             asteroide.incrementaPos(factorMov);
         }
     }
-    class ThreadJuego extends Thread{
-        @Override
-                public void run(){
-            while (true){
-               actualizaFisica();
-            }
-        }
-    }
+
     @Override
     public  boolean onKeyDown(int codigoTecla, KeyEvent evento) {
         super.onKeyDown(codigoTecla, evento);
@@ -213,6 +210,7 @@ public class VistaJuego extends View {
         }
         return procesada;
     }
+
     @Override
   public boolean onKeyUp(int codigoTecla,KeyEvent evento){
         super.onKeyUp(codigoTecla,evento);
@@ -234,6 +232,48 @@ public class VistaJuego extends View {
         }
         return procesada;
 
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        super.onTouchEvent(event);
+        float x = event.getX();
+        float y = event.getY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                disparo = true;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                float dx = Math.abs(x - mX);
+                float dy = Math.abs(y - mY);
+                if (dy < 8 && dx > 8) {
+                    giroNave = Math.round((x - mX) / 6);
+                    disparo = false;
+                } else if (dx < 2 && dy > 2) {
+                    aceleracionNave = Math.abs(Math.round((mY - y) / .2));
+                    disparo = false;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                giroNave = 0;
+                aceleracionNave = 0;
+                if (disparo) {
+//                      activaMisil();
+                }
+                break;
+        }
+        mX = x;
+        mY = y;
+        return true;
+    }
+
+    class ThreadJuego extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                actualizaFisica();
+            }
+        }
     }
 
 }
